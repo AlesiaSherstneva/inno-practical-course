@@ -2,16 +2,36 @@ package com.innowise.linked_list;
 
 import java.util.NoSuchElementException;
 
+/**
+ * An implementation of the {@link CustomList} interface using linked list.
+ *
+ * @param <E> {@inheritDoc}
+ */
 public class CustomLinkedList<E> implements CustomList<E> {
+    /** Reference to the first node of the list. */
     private Node<E> head;
+
+    /** Reference to the last node of the list. */
     private Node<E> tail;
+
+    /** The number of elements in the list. */
     private int size;
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
     @Override
     public int size() {
         return size;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param element {@inheritDoc}
+     */
     @Override
     public void addFirst(E element) {
         Node<E> newNode = new Node<>(element);
@@ -26,6 +46,11 @@ public class CustomLinkedList<E> implements CustomList<E> {
         size++;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param element {@inheritDoc}
+     */
     @Override
     public void addLast(E element) {
         Node<E> newNode = new Node<>(element);
@@ -40,6 +65,13 @@ public class CustomLinkedList<E> implements CustomList<E> {
         size++;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param index {@inheritDoc}
+     * @param element {@inheritDoc}
+     * @throws IndexOutOfBoundsException {@inheritDoc} ({@code index < 0 || index > size()})
+     */
     @Override
     public void add(int index, E element) {
         checkNewNodeIndex(index);
@@ -65,6 +97,12 @@ public class CustomLinkedList<E> implements CustomList<E> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     * @throws NoSuchElementException {@inheritDoc}
+     */
     @Override
     public E getFirst() {
         if (head == null) {
@@ -73,6 +111,12 @@ public class CustomLinkedList<E> implements CustomList<E> {
         return head.value;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     * @throws NoSuchElementException {@inheritDoc}
+     */
     @Override
     public E getLast() {
         if (tail == null) {
@@ -81,6 +125,14 @@ public class CustomLinkedList<E> implements CustomList<E> {
         return tail.value;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param index {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws NoSuchElementException {@inheritDoc}
+     * @throws IndexOutOfBoundsException {@inheritDoc} ({@code index < 0 || index >= size()})
+     */
     @Override
     public E get(int index) {
         checkExistingNodeIndex(index);
@@ -102,6 +154,12 @@ public class CustomLinkedList<E> implements CustomList<E> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     * @throws NoSuchElementException {@inheritDoc}
+     */
     @Override
     public E removeFirst() {
         if (head == null) {
@@ -120,6 +178,12 @@ public class CustomLinkedList<E> implements CustomList<E> {
         return firstNode.value;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     * @throws NoSuchElementException {@inheritDoc}
+     */
     @Override
     public E removeLast() {
         if (tail == null) {
@@ -143,6 +207,13 @@ public class CustomLinkedList<E> implements CustomList<E> {
         return lastNode.value;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     * @throws NoSuchElementException {@inheritDoc}
+     * @throws IndexOutOfBoundsException {@inheritDoc} ({@code index < 0 || index >= size()})
+     */
     @Override
     public E remove(int index) {
         checkExistingNodeIndex(index);
@@ -188,6 +259,9 @@ public class CustomLinkedList<E> implements CustomList<E> {
         }
     }
 
+    /**
+     * Represents a node in the linked list, containing an element and a reference to the next node.
+     */
     private static class Node<E> {
         E value;
         Node<E> next;
