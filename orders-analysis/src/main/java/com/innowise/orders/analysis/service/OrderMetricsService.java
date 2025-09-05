@@ -9,7 +9,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Service for sales and customer analysis.
+ * Provides methods to calculate various business metrics from order data.
+ */
 public class OrderMetricsService {
+    /**
+     * Retrieves a list of unique cities where orders came from.
+     *
+     * @param orders the list of orders to analyze
+     * @return the list of unique cities
+     */
     public List<String> getUniqueOrderCities(List<Order> orders) {
         return orders.stream()
                 .map(Order::getCustomer)
@@ -18,6 +28,12 @@ public class OrderMetricsService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Calculates total income for all completed orders.
+     *
+     * @param orders the list of orders to analyze
+     * @return total income for completed orders
+     */
     public double countTotalCompletedIncome(List<Order> orders) {
         return orders.stream()
                 .filter(order -> order.getStatus().equals(OrderStatus.DELIVERED))
@@ -25,6 +41,12 @@ public class OrderMetricsService {
                 .sum();
     }
 
+    /**
+     * Identifies the most popular product by sales.
+     *
+     * @param orders the list of orders to analyze
+     * @return the most popular product
+     */
     public String findBestSellingProduct(List<Order> orders) {
         return orders.stream()
                 .filter(order -> order.getStatus() != OrderStatus.CANCELLED)
@@ -37,6 +59,12 @@ public class OrderMetricsService {
                 .map(Map.Entry::getKey).orElse("No products found");
     }
 
+    /**
+     * Calculates the average check for successfully delivered orders.
+     *
+     * @param orders the list of orders to analyze
+     * @return the average check for delivered orders
+     */
     public double calculateDeliveredOrdersAverageCheck(List<Order> orders) {
         List<Order> deliveredOrders = orders.stream()
                 .filter(order -> order.getStatus().equals(OrderStatus.DELIVERED))
@@ -53,6 +81,12 @@ public class OrderMetricsService {
         return totalAmount / deliveredOrders.size();
     }
 
+    /**
+     * Finds customers who have more than 5 orders.
+     *
+     * @param orders the list of orders to analyze
+     * @return the list of customers with more than 5 orders
+     */
     public List<Customer> findCustomersWithFiveOrMoreOrders(List<Order> orders) {
         return orders.stream()
                 .collect(Collectors.groupingBy(Order::getCustomer, Collectors.counting()))
