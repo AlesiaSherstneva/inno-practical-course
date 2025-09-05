@@ -139,31 +139,26 @@ class OrderMetricsServiceTest {
     }
 
     @Test
-    void findCustomersWithFiveOrMoreOrdersSuccessfulTest() {
-        Customer customer1 = ModelsBuilder.getCustomerById("Customer with 4 orders");
-        for (int i = 0; i < 4; i++) {
+    void findCustomersWithMoreThanFiveOrdersSuccessfulTest() {
+        Customer customer1 = ModelsBuilder.getCustomerById("Customer with 5 orders");
+        for (int i = 0; i < 5; i++) {
             testOrders.add(ModelsBuilder.getOrderByCustomer(customer1));
         }
-        Customer customer2 = ModelsBuilder.getCustomerById("Customer with 5 orders");
-        for (int i = 0; i < 5; i++) {
+        Customer customer2 = ModelsBuilder.getCustomerById("Customer with 6 orders");
+        for (int i = 0; i < 6; i++) {
             testOrders.add(ModelsBuilder.getOrderByCustomer(customer2));
         }
-        Customer customer3 = ModelsBuilder.getCustomerById("Customer with 6 orders");
-        for (int i = 0; i < 6; i++) {
-            testOrders.add(ModelsBuilder.getOrderByCustomer(customer3));
-        }
 
-        List<Customer> customersWithMoreThanFiveOrders = orderMetricsService.findCustomersWithFiveOrMoreOrders(testOrders);
+        List<Customer> customersWithMoreThanFiveOrders = orderMetricsService.findCustomersWithMoreThanFiveOrders(testOrders);
 
-        assertEquals(2, customersWithMoreThanFiveOrders.size());
+        assertEquals(1, customersWithMoreThanFiveOrders.size());
         assertFalse(customersWithMoreThanFiveOrders.contains(customer1));
         assertTrue(customersWithMoreThanFiveOrders.contains(customer2));
-        assertTrue(customersWithMoreThanFiveOrders.contains(customer3));
     }
 
     @Test
-    void findCustomersWithFiveOrMoreOrdersFromEmptyListTest() {
-        List<Customer> customersWithMoreThanFiveOrders = orderMetricsService.findCustomersWithFiveOrMoreOrders(testOrders);
+    void findCustomersWithMoreThanFiveOrdersFromEmptyListTest() {
+        List<Customer> customersWithMoreThanFiveOrders = orderMetricsService.findCustomersWithMoreThanFiveOrders(testOrders);
 
         assertTrue(customersWithMoreThanFiveOrders.isEmpty());
     }

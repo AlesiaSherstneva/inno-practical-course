@@ -76,7 +76,7 @@ public class OrderMetricsService {
 
         double totalAmount = deliveredOrders.stream()
                 .mapToDouble(order -> calculateTotalAmount(order.getItems()))
-                .reduce(0, Double::sum);
+                .sum();
 
         return totalAmount / deliveredOrders.size();
     }
@@ -87,11 +87,11 @@ public class OrderMetricsService {
      * @param orders the list of orders to analyze
      * @return the list of customers with more than 5 orders
      */
-    public List<Customer> findCustomersWithFiveOrMoreOrders(List<Order> orders) {
+    public List<Customer> findCustomersWithMoreThanFiveOrders(List<Order> orders) {
         return orders.stream()
                 .collect(Collectors.groupingBy(Order::getCustomer, Collectors.counting()))
                 .entrySet().stream()
-                .filter(es -> es.getValue() >= 5)
+                .filter(es -> es.getValue() > 5)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }
