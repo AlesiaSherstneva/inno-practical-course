@@ -1,4 +1,4 @@
-package com.innowise.orders_analysis.model.enums;
+package com.innowise.orders.analysis.model.enums;
 
 public enum OrderStatus {
     NEW, PROCESSING, SHIPPED, DELIVERED, CANCELLED

@@ -1,9 +1,9 @@
-package com.innowise.orders_analysis.service;
+package com.innowise.orders.analysis.service;
 
-import com.innowise.orders_analysis.model.Customer;
-import com.innowise.orders_analysis.model.Order;
-import com.innowise.orders_analysis.model.OrderItem;
-import com.innowise.orders_analysis.model.enums.OrderStatus;
+import com.innowise.orders.analysis.model.Customer;
+import com.innowise.orders.analysis.model.Order;
+import com.innowise.orders.analysis.model.enums.OrderStatus;
+import com.innowise.orders.analysis.model.OrderItem;
 
 import java.util.List;
 import java.util.Map;

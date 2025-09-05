@@ -1,4 +1,4 @@
-package com.innowise.orders_analysis.model;
+package com.innowise.orders.analysis.model;
 
 import lombok.Builder;
 

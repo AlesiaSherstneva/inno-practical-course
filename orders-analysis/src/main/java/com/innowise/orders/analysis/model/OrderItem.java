@@ -1,6 +1,6 @@
-package com.innowise.orders_analysis.model;
+package com.innowise.orders.analysis.model;
 
-import com.innowise.orders_analysis.model.enums.Category;
+import com.innowise.orders.analysis.model.enums.Category;
 import lombok.Builder;
 
 @Builder

@@ -1,6 +1,6 @@
-package com.innowise.orders_analysis.model;
+package com.innowise.orders.analysis.model;
 
-import com.innowise.orders_analysis.model.enums.OrderStatus;
+import com.innowise.orders.analysis.model.enums.OrderStatus;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
