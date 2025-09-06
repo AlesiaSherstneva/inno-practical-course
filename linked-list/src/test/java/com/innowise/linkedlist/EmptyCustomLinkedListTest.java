@@ -1,4 +1,4 @@
-package com.innowise.linked_list;
+package com.innowise.linkedlist;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

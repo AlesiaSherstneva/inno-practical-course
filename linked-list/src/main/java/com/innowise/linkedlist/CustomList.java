@@ -1,4 +1,4 @@
-package com.innowise.linked_list;
+package com.innowise.linkedlist;
 
 import java.util.NoSuchElementException;
 
