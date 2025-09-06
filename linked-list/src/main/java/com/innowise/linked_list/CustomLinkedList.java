@@ -39,6 +39,7 @@ public class CustomLinkedList<E> implements CustomList<E> {
         if (head == null) {
             setAloneNode(newNode);
         } else {
+            head.previous = newNode;
             newNode.next = head;
             head = newNode;
         }
@@ -59,6 +60,7 @@ public class CustomLinkedList<E> implements CustomList<E> {
             setAloneNode(newNode);
         } else {
             tail.next = newNode;
+            newNode.previous = tail;
             tail = newNode;
         }
 
@@ -81,17 +83,22 @@ public class CustomLinkedList<E> implements CustomList<E> {
         } else if (index == size) {
             addLast(element);
         } else {
-            int tempIndex = 0;
-            Node<E> tempNode = head;
+            Node<E> newNode = new Node<>(element), tempNode;
 
-            while (tempIndex < index - 1) {
-                tempNode = tempNode.next;
-                tempIndex++;
+            if (index <= size / 2) {
+                tempNode = moveForwardInList(index - 1);
+
+                newNode.previous = tempNode;
+                newNode.next = tempNode.next;
+                tempNode.next = newNode;
+            } else {
+                tempNode = moveBackInList(index);
+
+                newNode.next = tempNode;
+                newNode.previous = tempNode.previous;
+                tempNode.previous.next = newNode;
+                tempNode.previous = newNode;
             }
-
-            Node<E> newNode = new Node<>(element);
-            newNode.next = tempNode.next;
-            tempNode.next = newNode;
 
             size++;
         }
@@ -142,12 +149,12 @@ public class CustomLinkedList<E> implements CustomList<E> {
         } else if (index == size - 1) {
             return getLast();
         } else {
-            int tempIndex = 0;
-            Node<E> tempNode = head;
+            Node<E> tempNode;
 
-            while (tempIndex < index) {
-                tempNode = tempNode.next;
-                tempIndex++;
+            if (index <= size / 2) {
+                tempNode = moveForwardInList(index);
+            } else {
+                tempNode = moveBackInList(index);
             }
 
             return tempNode.value;
@@ -171,6 +178,7 @@ public class CustomLinkedList<E> implements CustomList<E> {
             setNullNodes();
         } else {
             head = head.next;
+            head.previous = null;
         }
 
         size--;
@@ -194,11 +202,7 @@ public class CustomLinkedList<E> implements CustomList<E> {
         if (tail == head) {
             setNullNodes();
         } else {
-            Node<E> tempNode = head;
-            while (tempNode.next != tail) {
-                tempNode = tempNode.next;
-            }
-            tail = tempNode;
+            tail = lastNode.previous;
             tail.next = null;
         }
 
@@ -223,17 +227,20 @@ public class CustomLinkedList<E> implements CustomList<E> {
         } else if (index == size - 1) {
             return removeLast();
         } else {
-            Node<E> tempNode = head;
-            for (int i = 0; i < index - 1; i++) {
-                tempNode = tempNode.next;
+            Node<E> tempNode;
+
+            if (index <= size / 2) {
+                tempNode = moveForwardInList(index);
+            } else {
+                tempNode = moveBackInList(index);
             }
 
-            Node<E> retrievedNode = tempNode.next;
-            tempNode.next = retrievedNode.next;
+            tempNode.previous.next = tempNode.next;
+            tempNode.next.previous = tempNode.previous;
 
             size--;
 
-            return retrievedNode.value;
+            return tempNode.value;
         }
     }
 
@@ -259,12 +266,37 @@ public class CustomLinkedList<E> implements CustomList<E> {
         }
     }
 
+    private Node<E> moveForwardInList(int untilTo) {
+        int tempIndex = 0;
+        Node<E> tempNode = head;
+
+        while (tempIndex < untilTo) {
+            tempNode = tempNode.next;
+            tempIndex++;
+        }
+
+        return tempNode;
+    }
+
+    private Node<E> moveBackInList(int untilTo) {
+        int tempIndex = size - 1;
+        Node<E> tempNode = tail;
+
+        while (tempIndex > untilTo) {
+            tempNode = tempNode.previous;
+            tempIndex--;
+        }
+
+        return tempNode;
+    }
+
     /**
      * Represents a node in the linked list, containing an element and a reference to the next node.
      */
     private static class Node<E> {
         E value;
         Node<E> next;
+        Node<E> previous;
 
         private Node(E value) {
             this.value = value;
