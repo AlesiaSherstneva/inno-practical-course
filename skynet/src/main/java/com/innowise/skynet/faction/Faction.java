@@ -54,13 +54,19 @@ public abstract class Faction implements Runnable {
     }
 
     private void buildRobots() {
-        int numberOfFullSets = partsWarehouse.values().stream()
-                .min(Integer::compareTo).orElse(0);
+        int heads = partsWarehouse.getOrDefault(Part.HEAD, 0);
+        int torsos = partsWarehouse.getOrDefault(Part.TORSO, 0);
+        int hands = partsWarehouse.getOrDefault(Part.HAND, 0);
+        int feet = partsWarehouse.getOrDefault(Part.FEET, 0);
 
-        armySize += numberOfFullSets;
+        int possibleRobots = Math.min(Math.min(heads, torsos), Math.min(hands / 2, feet / 2));
 
-        for (Part part: partsWarehouse.keySet()) {
-            partsWarehouse.computeIfPresent(part, (key, value) -> value - numberOfFullSets);
+        if (possibleRobots > 0) {
+            armySize += possibleRobots;
+            partsWarehouse.put(Part.HEAD, heads - possibleRobots);
+            partsWarehouse.put(Part.TORSO, torsos - possibleRobots);
+            partsWarehouse.put(Part.HAND, hands - possibleRobots * 2);
+            partsWarehouse.put(Part.FEET, feet - possibleRobots * 2);
         }
     }
 
