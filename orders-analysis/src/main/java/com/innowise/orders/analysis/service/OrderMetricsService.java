@@ -5,6 +5,7 @@ import com.innowise.orders.analysis.model.Order;
 import com.innowise.orders.analysis.model.enums.OrderStatus;
 import com.innowise.orders.analysis.model.OrderItem;
 
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -66,19 +67,16 @@ public class OrderMetricsService {
      * @return the average check for delivered orders
      */
     public double calculateDeliveredOrdersAverageCheck(List<Order> orders) {
-        List<Order> deliveredOrders = orders.stream()
+        DoubleSummaryStatistics stats = orders.stream()
                 .filter(order -> order.getStatus().equals(OrderStatus.DELIVERED))
-                .toList();
+                .mapToDouble(order -> calculateTotalAmount(order.getItems()))
+                .summaryStatistics();
 
-        if (deliveredOrders.isEmpty()) {
+        if (stats.getCount() == 0) {
             return 0.00;
         }
 
-        double totalAmount = deliveredOrders.stream()
-                .mapToDouble(order -> calculateTotalAmount(order.getItems()))
-                .sum();
-
-        return totalAmount / deliveredOrders.size();
+        return stats.getAverage();
     }
 
     /**
@@ -89,6 +87,7 @@ public class OrderMetricsService {
      */
     public List<Customer> findCustomersWithMoreThanFiveOrders(List<Order> orders) {
         return orders.stream()
+                .filter(order -> order.getStatus() != OrderStatus.CANCELLED)
                 .collect(Collectors.groupingBy(Order::getCustomer, Collectors.counting()))
                 .entrySet().stream()
                 .filter(es -> es.getValue() > 5)
