@@ -1,8 +1,8 @@
-package com.innowise.skynet.faction;
+package com.innowise.skynet.service.faction;
 
-import com.innowise.skynet.neutral.Factory;
-import com.innowise.skynet.neutral.enums.Part;
-import com.innowise.skynet.neutral.enums.State;
+import com.innowise.skynet.service.neutral.Factory;
+import com.innowise.skynet.service.neutral.enums.Part;
+import com.innowise.skynet.service.neutral.enums.State;
 
 import java.util.HashMap;
 import java.util.Map;

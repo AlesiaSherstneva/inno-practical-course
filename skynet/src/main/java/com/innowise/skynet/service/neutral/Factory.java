@@ -1,8 +1,8 @@
-package com.innowise.skynet.neutral;
+package com.innowise.skynet.service.neutral;
 
-import com.innowise.skynet.faction.Faction;
-import com.innowise.skynet.neutral.enums.Part;
-import com.innowise.skynet.neutral.enums.State;
+import com.innowise.skynet.service.faction.Faction;
+import com.innowise.skynet.service.neutral.enums.Part;
+import com.innowise.skynet.service.neutral.enums.State;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

@@ -1,9 +1,9 @@
-package com.innowise.skynet.runner;
+package com.innowise.skynet;
 
-import com.innowise.skynet.faction.Faction;
-import com.innowise.skynet.faction.Wednesday;
-import com.innowise.skynet.faction.World;
-import com.innowise.skynet.neutral.Factory;
+import com.innowise.skynet.service.faction.Faction;
+import com.innowise.skynet.service.faction.Wednesday;
+import com.innowise.skynet.service.faction.World;
+import com.innowise.skynet.service.neutral.Factory;
 
 /**
  * Main simulation orchestrator that coordinates the robot army competition between factions.

@@ -1,6 +1,6 @@
-package com.innowise.skynet.faction;
+package com.innowise.skynet.service.faction;
 
-import com.innowise.skynet.neutral.Factory;
+import com.innowise.skynet.service.neutral.Factory;
 
 /**
  * The World faction - one of the two competing factions in the simulation.

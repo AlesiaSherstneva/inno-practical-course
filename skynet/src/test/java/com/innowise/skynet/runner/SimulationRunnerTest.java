@@ -1,7 +1,8 @@
 package com.innowise.skynet.runner;
 
-import com.innowise.skynet.faction.Wednesday;
-import com.innowise.skynet.faction.World;
+import com.innowise.skynet.SimulationRunner;
+import com.innowise.skynet.service.faction.Wednesday;
+import com.innowise.skynet.service.faction.World;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package com.innowise.skynet.neutral.enums;
+package com.innowise.skynet.service.neutral.enums;
 
 /**
  * Enum represents the possible Factory states.
