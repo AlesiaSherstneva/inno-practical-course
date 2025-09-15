@@ -7,6 +7,8 @@ import com.innowise.skynet.service.neutral.enums.State;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Random;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -24,6 +26,11 @@ public class Factory implements Runnable {
      * Semaphore used to synchronize factions' threads visiting Factory at nighttime
      */
     private final Semaphore nightSemaphore = new Semaphore(0);
+
+    /**
+     * Synchronization barrier for fair faction access to conveyor
+     */
+    private final CyclicBarrier conveyorAccessBarrier = new CyclicBarrier(2);
 
     /**
      * Current operational state of the factory (DAY, NIGHT, or FINISHED)
@@ -93,9 +100,16 @@ public class Factory implements Runnable {
      * @param faction the faction attempting to collect parts
      */
     public void supplyParts(Faction faction) {
-        nightSemaphore.release();
-        synchronized (conveyor) {
-            faction.takePartsFromFactory(conveyor);
+        try {
+            conveyorAccessBarrier.await();
+
+            synchronized (conveyor) {
+                faction.takePartsFromFactory(conveyor);
+            }
+
+            nightSemaphore.release();
+        } catch (InterruptedException | BrokenBarrierException e) {
+            Thread.currentThread().interrupt();
         }
     }
 
