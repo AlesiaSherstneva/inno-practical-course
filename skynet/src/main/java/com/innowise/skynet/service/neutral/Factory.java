@@ -72,6 +72,11 @@ public class Factory implements Runnable {
                 notifyAll();
             }
         } catch (InterruptedException ex) {
+            synchronized (this) {
+                currentState = State.FINISHED;
+                notifyAll();
+            }
+
             Thread.currentThread().interrupt();
         }
     }
