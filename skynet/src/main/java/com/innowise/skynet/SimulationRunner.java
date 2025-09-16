@@ -1,9 +1,14 @@
 package com.innowise.skynet;
 
+import com.innowise.skynet.dto.SimulationResultDto;
 import com.innowise.skynet.service.faction.Faction;
 import com.innowise.skynet.service.faction.impl.Wednesday;
 import com.innowise.skynet.service.faction.impl.World;
 import com.innowise.skynet.service.neutral.Factory;
+import com.innowise.skynet.service.neutral.enums.State;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main simulation orchestrator that coordinates the robot army competition between factions.
@@ -53,7 +58,7 @@ public class SimulationRunner {
      * Starts the factory and both faction threads simultaneously to begin the competition.
      * Blocks until all threads have finished execution (after 100 days).
      */
-    public void runSimulation() throws InterruptedException {
+    public SimulationResultDto runSimulation() throws InterruptedException {
         Thread factoryThread = new Thread(factory);
         Thread worldThread = new Thread(world);
         Thread wednesdayThread = new Thread(wednesday);
@@ -65,39 +70,47 @@ public class SimulationRunner {
         factoryThread.join();
         worldThread.join();
         wednesdayThread.join();
+
+        return SimulationResultDto.builder()
+                .worldArmySize(world.getArmySize())
+                .wednesdayArmySize(wednesday.getArmySize())
+                .winner(getWinner())
+                .build();
     }
 
-    /**
-     * Returns the final army size of the World faction.
-     * Should be called after simulation completion.
-     *
-     * @return the number of robots built by the World faction
-     */
-    public int getWorldArmySize() {
-        return world.getArmySize();
+    public List<SimulationResultDto> runSimulation(int times) throws InterruptedException {
+        List<SimulationResultDto> simulationResultsList = new ArrayList<>();
+
+        for (int i = 0; i < times; i++) {
+            SimulationResultDto simulationResult = runSimulation();
+            simulationResultsList.add(simulationResult);
+            resetAll();
+        }
+
+        return simulationResultsList;
     }
 
-    /**
-     * Returns the final army size of the Wednesday faction.
-     * Should be called after simulation completion.
-     *
-     * @return the number of robots built by the Wednesday faction
-     */
-    public int getWednesdayArmySize() {
-        return wednesday.getArmySize();
-    }
-
-    /**
-     * Returns the winner of the robot army competition.
-     *
-     * @return a string indicating the winning faction or a draw result
-     */
-    public String getWinner() {
-        if (getWorldArmySize() == getWednesdayArmySize()) {
+    private String getWinner() {
+        if (world.getArmySize() == wednesday.getArmySize()) {
             return "Draw, no winner";
         }
 
-        return String.format("The winner is %s faction", getWorldArmySize() > getWednesdayArmySize()
+        return String.format("The winner is %s faction", world.getArmySize() > wednesday.getArmySize()
                 ? world.getClass().getSimpleName() : wednesday.getClass().getSimpleName());
+    }
+
+    private void resetAll() {
+        while (factory.currentState() != State.FINISHED) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+
+        factory.reset();
+        world.reset();
+        wednesday.reset();
     }
 }

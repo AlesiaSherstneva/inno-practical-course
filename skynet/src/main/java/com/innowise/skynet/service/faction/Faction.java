@@ -59,7 +59,10 @@ public abstract class Faction implements Runnable {
      */
     public void takePartsFromFactory(Queue<Part> conveyor) {
         while (partsBackpack.size() < 5 && !conveyor.isEmpty()) {
-            partsBackpack.add(conveyor.poll());
+            Part part = conveyor.poll();
+            if (part != null) {
+                partsBackpack.add(part);
+            }
         }
     }
 
@@ -80,5 +83,11 @@ public abstract class Faction implements Runnable {
      */
     public int getArmySize() {
         return armySize;
+    }
+
+    public void reset() {
+        partsBackpack.clear();
+        robotAssembler.reset();
+        armySize = 0;
     }
 }

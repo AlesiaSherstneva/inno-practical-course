@@ -39,4 +39,12 @@ public class RobotAssembler {
 
         return builtRobots;
     }
+
+    public void reset() {
+        heads = 0;
+        torsos = 0;
+        hands = 0;
+        feet = 0;
+        possibleRobots = 0;
+    }
 }

@@ -64,6 +64,7 @@ public class Factory implements Runnable {
         try {
             while (currentState != State.FINISHED && currentDay < TOTAL_DAYS) {
                 currentDay++;
+                conveyor.clear();
                 produceParts();
 
                 synchronized (this) {
@@ -110,10 +111,10 @@ public class Factory implements Runnable {
             synchronized (conveyor) {
                 faction.takePartsFromFactory(conveyor);
             }
+
+            nightSemaphore.release();
         } catch (InterruptedException | BrokenBarrierException | TimeoutException ex) {
             Thread.currentThread().interrupt();
-        } finally {
-            nightSemaphore.release();
         }
     }
 
@@ -124,5 +125,13 @@ public class Factory implements Runnable {
      */
     public State currentState() {
         return currentState;
+    }
+
+    public void reset() {
+        conveyor.clear();
+        currentState = State.DAY;
+        currentDay = 0;
+        nightSemaphore.drainPermits();
+        conveyorAccessBarrier.reset();
     }
 }
