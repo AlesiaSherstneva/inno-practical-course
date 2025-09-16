@@ -57,6 +57,8 @@ public class SimulationRunner {
      * Executes the complete simulation by starting all threads and waiting for their completion.
      * Starts the factory and both faction threads simultaneously to begin the competition.
      * Blocks until all threads have finished execution (after 100 days).
+     *
+     * @return SimulationResultDto containing final army sizes and winner information
      */
     public SimulationResultDto runSimulation() throws InterruptedException {
         Thread factoryThread = new Thread(factory);
@@ -78,6 +80,12 @@ public class SimulationRunner {
                 .build();
     }
 
+    /**
+     * Executes multiple simulation runs and collects results for statistical analysis.
+     *
+     * @param times the number of simulation runs to execute
+     * @return list of SimulationResultDto instances containing results from each run
+     */
     public List<SimulationResultDto> runSimulation(int times) throws InterruptedException {
         List<SimulationResultDto> simulationResultsList = new ArrayList<>();
 

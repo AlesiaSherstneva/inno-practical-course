@@ -19,39 +19,25 @@ import java.util.concurrent.TimeoutException;
  * and synchronizing access to parts between competing factions.
  */
 public class Factory implements Runnable {
-    /**
-     * Conveyor belt storing produced parts
-     */
+    /** Conveyor belt storing produced parts */
     private final Deque<Part> conveyor = new ArrayDeque<>(10);
 
-    /**
-     * Semaphore used to synchronize factions' threads visiting Factory at nighttime
-     */
+    /** Semaphore used to synchronize factions' threads visiting Factory at nighttime */
     private final Semaphore nightSemaphore = new Semaphore(0);
 
-    /**
-     * Synchronization barrier for fair faction access to conveyor
-     */
+    /** Synchronization barrier for fair faction access to conveyor */
     private final CyclicBarrier conveyorAccessBarrier = new CyclicBarrier(2);
 
-    /**
-     * Current operational state of the factory (DAY, NIGHT, or FINISHED)
-     */
+    /** Current operational state of the factory (DAY, NIGHT, or FINISHED) */
     private volatile State currentState = State.DAY;
 
-    /**
-     * Counter tracking the current day of factory working
-     */
+    /** Counter tracking the current day of factory working */
     private int currentDay;
 
-    /**
-     * Total number of days the factory will produce robot parts
-     */
+    /** Total number of days the factory will produce robot parts */
     private static final int TOTAL_DAYS = 100;
 
-    /**
-     * Generator used to select the type of robot parts and the number of parts to produce randomly
-     */
+    /** Generator used to select the type of robot parts and the number of parts to produce randomly */
     private static final Random RANDOM = new Random();
 
     /**
@@ -127,6 +113,11 @@ public class Factory implements Runnable {
         return currentState;
     }
 
+    /**
+     * Resets the factory to its initial.
+     * Clears the conveyor, resets state to DAY, zeroes the day counter,
+     * drains semaphore permits, resets the cyclic barrier.
+     */
     public void reset() {
         conveyor.clear();
         currentState = State.DAY;

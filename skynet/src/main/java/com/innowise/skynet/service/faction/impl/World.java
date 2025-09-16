@@ -7,6 +7,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * The World faction - one of the two competing factions in the simulation.
+ * Uses ArrayBlockingQueue as a backpack for carrying part.
  */
 public class World extends Faction {
     public World(Factory factory) {

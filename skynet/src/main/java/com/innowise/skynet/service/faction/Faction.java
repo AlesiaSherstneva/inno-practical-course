@@ -18,6 +18,7 @@ public abstract class Faction implements Runnable {
     /** Backpack for carrying parts from factory. Max capacity: 5 parts */
     protected BlockingQueue<Part> partsBackpack;
 
+    /** Assembler responsible for constructing robots from collected parts */
     protected RobotAssembler robotAssembler = new RobotAssembler();
 
     /** The size of built robot army */
@@ -85,6 +86,10 @@ public abstract class Faction implements Runnable {
         return armySize;
     }
 
+    /**
+     * Resets the faction's state by clearing the backpack, resetting the assembler,
+     * and setting army size to zero.
+     */
     public void reset() {
         partsBackpack.clear();
         robotAssembler.reset();

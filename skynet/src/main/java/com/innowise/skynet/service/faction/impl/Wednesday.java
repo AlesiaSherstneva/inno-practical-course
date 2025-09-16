@@ -7,6 +7,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * The Wednesday faction - one of the two competing factions in the simulation.
+ * Uses LinkedBlockingQueue as a backpack for carrying parts.
  */
 public class Wednesday extends Faction {
     public Wednesday(Factory factory) {
