@@ -10,6 +10,8 @@ import java.util.Random;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * The central factory class that produces robot parts and coordinates with factions.
@@ -69,7 +71,9 @@ public class Factory implements Runnable {
                     notifyAll();
                 }
 
-                nightSemaphore.acquire(2);
+                if (!nightSemaphore.tryAcquire(2, 5, TimeUnit.SECONDS)) {
+                    nightSemaphore.drainPermits();
+                }
 
                 synchronized (this) {
                     currentState = State.DAY;
@@ -101,15 +105,15 @@ public class Factory implements Runnable {
      */
     public void supplyParts(Faction faction) {
         try {
-            conveyorAccessBarrier.await();
+            conveyorAccessBarrier.await(5, TimeUnit.SECONDS);
 
             synchronized (conveyor) {
                 faction.takePartsFromFactory(conveyor);
             }
-
-            nightSemaphore.release();
-        } catch (InterruptedException | BrokenBarrierException e) {
+        } catch (InterruptedException | BrokenBarrierException | TimeoutException ex) {
             Thread.currentThread().interrupt();
+        } finally {
+            nightSemaphore.release();
         }
     }
 
