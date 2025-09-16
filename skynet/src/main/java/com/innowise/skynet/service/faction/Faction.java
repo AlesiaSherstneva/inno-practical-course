@@ -6,7 +6,6 @@ import com.innowise.skynet.service.neutral.enums.Part;
 import com.innowise.skynet.service.neutral.enums.State;
 
 import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -17,7 +16,7 @@ public abstract class Faction implements Runnable {
     protected final Factory factory;
 
     /** Backpack for carrying parts from factory. Max capacity: 5 parts */
-    protected BlockingQueue<Part> partsBackpack = new ArrayBlockingQueue<>(5);
+    protected BlockingQueue<Part> partsBackpack;
 
     protected RobotAssembler robotAssembler = new RobotAssembler();
 

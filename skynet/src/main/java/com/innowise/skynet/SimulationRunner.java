@@ -1,8 +1,8 @@
 package com.innowise.skynet;
 
 import com.innowise.skynet.service.faction.Faction;
-import com.innowise.skynet.service.faction.Wednesday;
-import com.innowise.skynet.service.faction.World;
+import com.innowise.skynet.service.faction.impl.Wednesday;
+import com.innowise.skynet.service.faction.impl.World;
 import com.innowise.skynet.service.neutral.Factory;
 
 /**
