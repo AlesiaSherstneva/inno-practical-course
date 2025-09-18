@@ -291,7 +291,7 @@ public class CustomLinkedList<E> implements CustomList<E> {
     }
 
     /**
-     * Represents a node in the linked list, containing an element and a reference to the next node.
+     * Represents a node in the linked list, containing an element and references to next and last nodes.
      */
     private static class Node<E> {
         E value;
